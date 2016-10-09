@@ -21,17 +21,17 @@ struct name                                      \
 {                                      \
     struct Types                                      \
     {                                      \
-		$for j [[struct n$j; ]] \
-		template <typename T>                                      \
-		constexpr static bool is_this_type_v = is_any_of_v<T $for j [[, n$j]]>;                                      \
+        $for j [[struct n$j; ]] \
+        template <typename T>                                      \
+        constexpr static bool is_this_type_v = is_any_of_v<T $for j [[, n$j]]>;                                      \
         constexpr static int start = start_value - 1;                                      \
         $for j [[
             struct n$j                                      \
             {                                      \
                 constexpr static int value = start + $j;\
                 constexpr static auto toString() { return #n$j; } \
-				constexpr bool operator==(const n$j&) const { return true; } \
-				template <typename T, typename = std::enable_if_t<!std::is_same<T, n$j>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; }\
+                constexpr bool operator==(const n$j&) const { return true; } \
+                template <typename T, typename = std::enable_if_t<!std::is_same<T, n$j>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; }\
             }; \
         ]]
     };                                      \
