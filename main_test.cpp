@@ -57,16 +57,21 @@ void foo(Magic::Type type)
     }
 }
 
-branchless_enum_value(be, -40, name_1, name_2);
+branchless_enum_value(be, -40, name_1, name_2)
+
+struct Foo
+{
+    branchless_enum_in_class_value(be, -40, name_1, name_2)
+};
 
 struct BranchlessVisitor : public boost::static_visitor<>
 {
 public:
-    void operator()(be::Types::name_1) const
+    void operator()(Foo::be::Types::name_1) const
     {
         std::cout << "hello t1\n";
     }
-    void operator()(be::Types::name_2) const
+    void operator()(Foo::be::Types::name_2) const
     {
         std::cout << "hello t2\n";
     }
@@ -81,11 +86,11 @@ public:
 int main(int argc, char *argv[])
 {
     auto magic = Magic::fromString(argv[1]);
-    auto branchless = be::fromString(argv[1]);
-    auto branchless2 = be::fromString(argv[2]);
+    auto branchless = Foo::be::fromString(argv[1]);
+    auto branchless2 = Foo::be::fromString(argv[2]);
 
-    auto constexp = be::name_1;
-    auto constexp2 = be::name_2;
+    auto constexp = Foo::be::name_1;
+    auto constexp2 = Foo::be::name_2;
 
     std::cout << "magic\n";
     foo(magic);
@@ -93,37 +98,39 @@ int main(int argc, char *argv[])
     std::cout << "\n\nbranchless\n";
     boost::apply_visitor(BranchlessVisitor{}, branchless);
 
+    if (constexp == -40)
+
     std::cout << "\n\nconstexpr compare\n";
     if (constexp == constexp2)
-        std::cout << be::toString(constexp) << " == " << be::toString(constexp2);
+        std::cout << Foo::be::toString(constexp) << " == " << Foo::be::toString(constexp2);
     else
-        std::cout << be::toString(constexp) << " != " << be::toString(constexp2);
+        std::cout << Foo::be::toString(constexp) << " != " << Foo::be::toString(constexp2);
 
     std::cout << "\n";
     if (constexp == constexp)
-        std::cout << be::toString(constexp) << " == " << be::toString(constexp);
+        std::cout << Foo::be::toString(constexp) << " == " << Foo::be::toString(constexp);
     else
-        std::cout << be::toString(constexp) << " != " << be::toString(constexp);
+        std::cout << Foo::be::toString(constexp) << " != " << Foo::be::toString(constexp);
 
     std::cout << "\n\nbranchless compare\n";
     if (branchless == branchless2)
-        std::cout << be::toString(branchless) << " == " << be::toString(branchless2);
+        std::cout << Foo::be::toString(branchless) << " == " << Foo::be::toString(branchless2);
     else
-        std::cout << be::toString(branchless) << " != " << be::toString(branchless2);
+        std::cout << Foo::be::toString(branchless) << " != " << Foo::be::toString(branchless2);
 
     std::cout << "\n\nvalue compare\n";
     int value{ 100 };
-    if (be::name_1.value == value)
-        std::cout << be::name_1.toString() << ".value(" << be::name_1.value << ") == " << value;
+    if (Foo::be::name_1.value == value)
+        std::cout << Foo::be::name_1.toString() << ".value(" << Foo::be::name_1.value << ") == " << value;
     else
-        std::cout << be::name_1.toString() << ".value(" << be::name_1.value << ") != " << value;
+        std::cout << Foo::be::name_1.toString() << ".value(" << Foo::be::name_1.value << ") != " << value;
 
     std::cout << "\n\nvalue compare\n";
     int value2{ -39 };
-    if (be::name_2.value == value2)
-        std::cout << be::name_2.toString() << ".value(" << be::name_2.value << ") == " << value2;
+    if (Foo::be::name_2.value == value2)
+        std::cout << Foo::be::name_2.toString() << ".value(" << Foo::be::name_2.value << ") == " << value2;
     else
-        std::cout << be::name_2.toString() << ".value(" << be::name_2.value << ") != " << value2;
+        std::cout << Foo::be::name_2.toString() << ".value(" << Foo::be::name_2.value << ") != " << value2;
 
     std::cout << "\n\n";
     return 0;
