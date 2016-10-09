@@ -12,6 +12,18 @@ struct be
             {
                 return "n1";
             }
+
+            constexpr bool operator==(const name_1&)
+            {
+                return true;
+            }
+
+            
+            //template <typename T, typename = std::disable_if_t<std::is_same<T, name_1>::value>>
+            constexpr bool operator==(const T&)
+            {
+                return false;
+            }
         };
         struct name_2
         {
@@ -19,6 +31,17 @@ struct be
             constexpr static auto toString()
             {
                 return "n2";
+            }
+
+            constexpr bool operator==(const name_2&)
+            {
+                return true;
+            }
+
+            template <typename T>
+            constexpr bool operator==(const T&)
+            {
+                return false;
             }
         };
     };
