@@ -83,6 +83,16 @@ public:
     }
 };
 
+struct BenchmarkResult
+{
+    
+};
+
+void benchmark(const size_t N)
+{
+
+}
+
 int main(int argc, char *argv[])
 {
     auto magic = Magic::fromString(argv[1]);
