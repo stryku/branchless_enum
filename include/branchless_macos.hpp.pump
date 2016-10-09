@@ -1,0 +1,89 @@
+$$ -*- mode: c++; -*-
+$$ This is a Pump source file.  Please use Pump to convert it to
+$$ branchless_macros.hpp
+$$
+$var n = 15  $$ The maximum arity we support.
+$$}} This meta comment fixes auto-indentation in editors.
+
+#include <boost/variant.hpp>
+
+$range i 1..n
+
+$for i [[
+
+$range j 1..i
+
+#define branchless_enum_$i(name, start_value $for j [[, n$j]] )                                      \
+struct name                                      \
+{                                      \
+    struct Types                                      \
+    {                                      \
+        constexpr static int start = start_value - 1;                                      \
+        $for j [[
+            struct n$j                                      \
+            {                                      \
+                constexpr static int value = start + $j;                                      \
+                constexpr static auto toString() { return "n$j"; }                                      \
+            }; \
+        ]]
+    };                                      \
+    $for j [[
+        static Types::n$j n$j; \
+    ]]
+    using Type = boost::variant<$for j , [[Types::n$j]]>;                                      \
+    template <typename T>                                      \
+    constexpr static bool is_this_type_v = is_any_of_v<T $for j [[, Types::n$j]]>;                                      \
+    struct detail                                      \
+    {                                      \
+        struct value_visitor : public boost::static_visitor<int>                                      \
+        {                                      \
+            $for j [[
+                constexpr int operator()(name::Types::n$j) const                                      \
+                {                                      \
+                    return name::Types::n$j::value;                                      \
+                }                                      \
+            ]]
+        };                                      \
+        template <typename T>                                      \
+        static constexpr int value(T)                                      \
+        {                                      \
+            return T::value;                                      \
+        }                                      \
+        static int value(const Type &t)                                      \
+        {                                      \
+            return boost::apply_visitor(value_visitor{}, t);                                      \
+        }                                      \
+    };                                      \
+    template <typename T>                                      \
+    static constexpr auto toString(T)                                      \
+    {                                      \
+        return T::toString();                                      \
+    }                                      \
+    static auto toString(const Type &t)                                      \
+    {                                      \
+        return boost::apply_visitor([](const auto &val) { return val.toString(); }, \
+                                    t);                                      \
+    }                                      \
+    static Type fromString(const std::string &str)\
+    {                               \
+        $for j [[
+            if (str == Types::n$j::toString())  return Types::n$j{};                               \
+        ]]
+                                       \
+        return{};                               \
+    }                               \
+};                               \
+template <typename T, typename T2, \
+    typename = std::enable_if<name::is_this_type_v<T> || \
+    name::is_this_type_v<T2>>>                               \
+    constexpr bool operator==(const T&, const T2&)                               \
+{                               \
+    return false;                                      \
+}                                      \
+template <typename T, \
+    typename = std::enable_if_t<name::is_this_type_v<T>>>                                      \
+    constexpr bool operator==(const T&, const T&)                                      \
+{                                      \
+    return true;                                      \
+}
+]]
