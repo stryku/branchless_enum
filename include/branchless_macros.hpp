@@ -9,1827 +9,1399 @@
 
 #define branchless_enum_1(name, start_value, operators , \
     n1 )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-        using Type = boost::variant<Types::n1>; \
-            \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_2(name, start_value, operators , n1, \
-    n2 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1>; \
+    constexpr static const auto nameArray = \
+        make_array<name_types::Types::n1>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_2(name, start_value, operators , n1, \
+    n2 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-        using Type = boost::variant<Types::n1, Types::n2>; \
-            \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_3(name, start_value, operators , n1, n2, \
-    n3 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_3(name, start_value, operators , n1, n2, \
+    n3 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3>; \
-            \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_4(name, start_value, operators , n1, n2, n3, \
-    n4 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_4(name, start_value, operators , n1, n2, n3, \
+    n4 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4>;                                      \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4>;                                      \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_5(name, start_value, operators , n1, n2, n3, n4, \
-    n5 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4>; \
+        \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, \
+        name_types::Types::n4>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_5(name, start_value, operators , n1, n2, n3, n4, \
+    n5 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5>;                                      \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5>;                                      \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_6(name, start_value, operators , n1, n2, n3, n4, n5, \
-    n6 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_6(name, start_value, operators , n1, n2, n3, n4, n5, \
+    n6 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6>;                                      \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6>; \
-            \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_7(name, start_value, operators , n1, n2, n3, n4, n5, \
-    n6, n7 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_7(name, start_value, operators , n1, n2, n3, n4, n5, \
+    n6, n7 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7>;                                      \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7>; \
-            \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_8(name, start_value, operators , n1, n2, n3, n4, n5, \
-    n6, n7, n8 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7>; \
+        \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, \
+        name_types::Types::n7>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_8(name, start_value, operators , n1, n2, n3, n4, n5, \
+    n6, n7, n8 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8>;                                      \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8>; \
-            \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_9(name, start_value, operators , n1, n2, n3, n4, n5, \
-    n6, n7, n8, n9 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_9(name, start_value, operators , n1, n2, n3, n4, n5, \
+    n6, n7, n8, n9 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9>;                                      \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, \
-            Types::n9>;                                      \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_10(name, start_value, operators , n1, n2, n3, n4, n5, \
-    n6, n7, n8, n9, n10 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_10(name, start_value, operators , n1, n2, n3, n4, n5, \
+    n6, n7, n8, n9, n10 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10>;                                      \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_11(name, start_value, operators , n1, n2, n3, n4, n5, \
-    n6, n7, n8, n9, n10, n11 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, \
+        name_types::Types::n10>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, \
+        name_types::Types::n10>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_11(name, start_value, operators , n1, n2, n3, n4, n5, \
+    n6, n7, n8, n9, n10, n11 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11;  \
         template <typename T>                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11>;                                      \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
-};
-
-#define branchless_enum_12(name, start_value, operators , n1, n2, n3, n4, n5, \
-    n6, n7, n8, n9, n10, n11, n12 )                                      \
-struct name                                      \
-{                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
     struct Types                                      \
     {                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+         \
+    };                                      \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    \
+        return{};\
+    }\
+};
+#define branchless_enum_12(name, start_value, operators , n1, n2, n3, n4, n5, \
+    n6, n7, n8, n9, n10, n11, n12 )                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11; \
             struct n12;  \
@@ -1837,283 +1409,210 @@ struct name                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11, n12>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n12                                      \
             {                                      \
-                constexpr static int value = start + 12;\
+                constexpr static int value = start + 12 - 1; \
                 constexpr static auto toString() { return #n12; } \
                 constexpr bool operator==(const n12&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n12>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-            static Types::n12 n12; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11, Types::n12>; \
-            \
-    struct detail                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
     {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n12) const \
-                                \
-                {                                      \
-                    return name::Types::n12::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+                    using n12 = name_types::Types::n12; \
+         \
     };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                    if (str == Types::n12::toString())  return Types::n12{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+            constexpr static Types::n12 n12{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n12::toString()) return \
+                        name_types::Types::n12{}; \
+                    \
+        return{};\
+    }\
 };
-
 #define branchless_enum_13(name, start_value, operators , n1, n2, n3, n4, n5, \
     n6, n7, n8, n9, n10, n11, n12, \
     n13 )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11; \
             struct n12; struct n13;  \
@@ -2121,302 +1620,225 @@ struct name                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11, n12, n13>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n12                                      \
             {                                      \
-                constexpr static int value = start + 12;\
+                constexpr static int value = start + 12 - 1; \
                 constexpr static auto toString() { return #n12; } \
                 constexpr bool operator==(const n12&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n12>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n13                                      \
             {                                      \
-                constexpr static int value = start + 13;\
+                constexpr static int value = start + 13 - 1; \
                 constexpr static auto toString() { return #n13; } \
                 constexpr bool operator==(const n13&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n13>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-            static Types::n12 n12; \
-            static Types::n13 n13; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11, Types::n12, Types::n13>; \
-            \
-    struct detail                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
     {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n12) const \
-                                \
-                {                                      \
-                    return name::Types::n12::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n13) const \
-                                \
-                {                                      \
-                    return name::Types::n13::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+                    using n12 = name_types::Types::n12; \
+                    using n13 = name_types::Types::n13; \
+         \
     };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                    if (str == Types::n12::toString())  return Types::n12{}; \
-                        \
-                    if (str == Types::n13::toString())  return Types::n13{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+            constexpr static Types::n12 n12{}; \
+            constexpr static Types::n13 n13{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n12::toString()) return \
+                        name_types::Types::n12{}; \
+                    if (str == name_types::Types::n13::toString()) return \
+                        name_types::Types::n13{}; \
+                    \
+        return{};\
+    }\
 };
-
 #define branchless_enum_14(name, start_value, operators , n1, n2, n3, n4, n5, \
     n6, n7, n8, n9, n10, n11, n12, n13, \
     n14 )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11; \
             struct n12; struct n13; struct n14;  \
@@ -2424,321 +1846,238 @@ struct name                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n12                                      \
             {                                      \
-                constexpr static int value = start + 12;\
+                constexpr static int value = start + 12 - 1; \
                 constexpr static auto toString() { return #n12; } \
                 constexpr bool operator==(const n12&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n12>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n13                                      \
             {                                      \
-                constexpr static int value = start + 13;\
+                constexpr static int value = start + 13 - 1; \
                 constexpr static auto toString() { return #n13; } \
                 constexpr bool operator==(const n13&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n13>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n14                                      \
             {                                      \
-                constexpr static int value = start + 14;\
+                constexpr static int value = start + 14 - 1; \
                 constexpr static auto toString() { return #n14; } \
                 constexpr bool operator==(const n14&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n14>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-            static Types::n12 n12; \
-            static Types::n13 n13; \
-            static Types::n14 n14; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11, Types::n12, Types::n13, Types::n14>; \
-            \
-    struct detail                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
     {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n12) const \
-                                \
-                {                                      \
-                    return name::Types::n12::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n13) const \
-                                \
-                {                                      \
-                    return name::Types::n13::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n14) const \
-                                \
-                {                                      \
-                    return name::Types::n14::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+                    using n12 = name_types::Types::n12; \
+                    using n13 = name_types::Types::n13; \
+                    using n14 = name_types::Types::n14; \
+         \
     };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                    if (str == Types::n12::toString())  return Types::n12{}; \
-                        \
-                    if (str == Types::n13::toString())  return Types::n13{}; \
-                        \
-                    if (str == Types::n14::toString())  return Types::n14{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+            constexpr static Types::n12 n12{}; \
+            constexpr static Types::n13 n13{}; \
+            constexpr static Types::n14 n14{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n12::toString()) return \
+                        name_types::Types::n12{}; \
+                    if (str == name_types::Types::n13::toString()) return \
+                        name_types::Types::n13{}; \
+                    if (str == name_types::Types::n14::toString()) return \
+                        name_types::Types::n14{}; \
+                    \
+        return{};\
+    }\
 };
-
 #define branchless_enum_15(name, start_value, operators , n1, n2, n3, n4, n5, \
     n6, n7, n8, n9, n10, n11, n12, n13, n14, \
     n15 )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11; \
             struct n12; struct n13; struct n14; struct n15;  \
@@ -2746,340 +2085,253 @@ struct name                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n12                                      \
             {                                      \
-                constexpr static int value = start + 12;\
+                constexpr static int value = start + 12 - 1; \
                 constexpr static auto toString() { return #n12; } \
                 constexpr bool operator==(const n12&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n12>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n13                                      \
             {                                      \
-                constexpr static int value = start + 13;\
+                constexpr static int value = start + 13 - 1; \
                 constexpr static auto toString() { return #n13; } \
                 constexpr bool operator==(const n13&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n13>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n14                                      \
             {                                      \
-                constexpr static int value = start + 14;\
+                constexpr static int value = start + 14 - 1; \
                 constexpr static auto toString() { return #n14; } \
                 constexpr bool operator==(const n14&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n14>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n15                                      \
             {                                      \
-                constexpr static int value = start + 15;\
+                constexpr static int value = start + 15 - 1; \
                 constexpr static auto toString() { return #n15; } \
                 constexpr bool operator==(const n15&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n15>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-            static Types::n12 n12; \
-            static Types::n13 n13; \
-            static Types::n14 n14; \
-            static Types::n15 n15; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11, Types::n12, Types::n13, Types::n14, \
-            Types::n15>;                                      \
-    struct detail                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
     {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n12) const \
-                                \
-                {                                      \
-                    return name::Types::n12::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n13) const \
-                                \
-                {                                      \
-                    return name::Types::n13::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n14) const \
-                                \
-                {                                      \
-                    return name::Types::n14::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n15) const \
-                                \
-                {                                      \
-                    return name::Types::n15::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+                    using n12 = name_types::Types::n12; \
+                    using n13 = name_types::Types::n13; \
+                    using n14 = name_types::Types::n14; \
+                    using n15 = name_types::Types::n15; \
+         \
     };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                    if (str == Types::n12::toString())  return Types::n12{}; \
-                        \
-                    if (str == Types::n13::toString())  return Types::n13{}; \
-                        \
-                    if (str == Types::n14::toString())  return Types::n14{}; \
-                        \
-                    if (str == Types::n15::toString())  return Types::n15{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+            constexpr static Types::n12 n12{}; \
+            constexpr static Types::n13 n13{}; \
+            constexpr static Types::n14 n14{}; \
+            constexpr static Types::n15 n15{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n12::toString()) return \
+                        name_types::Types::n12{}; \
+                    if (str == name_types::Types::n13::toString()) return \
+                        name_types::Types::n13{}; \
+                    if (str == name_types::Types::n14::toString()) return \
+                        name_types::Types::n14{}; \
+                    if (str == name_types::Types::n15::toString()) return \
+                        name_types::Types::n15{}; \
+                    \
+        return{};\
+    }\
 };
-
 #define branchless_enum_16(name, start_value, operators , n1, n2, n3, n4, n5, \
     n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, \
     n16 )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11; \
             struct n12; struct n13; struct n14; struct n15; struct n16;  \
@@ -3087,359 +2339,266 @@ struct name                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n12                                      \
             {                                      \
-                constexpr static int value = start + 12;\
+                constexpr static int value = start + 12 - 1; \
                 constexpr static auto toString() { return #n12; } \
                 constexpr bool operator==(const n12&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n12>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n13                                      \
             {                                      \
-                constexpr static int value = start + 13;\
+                constexpr static int value = start + 13 - 1; \
                 constexpr static auto toString() { return #n13; } \
                 constexpr bool operator==(const n13&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n13>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n14                                      \
             {                                      \
-                constexpr static int value = start + 14;\
+                constexpr static int value = start + 14 - 1; \
                 constexpr static auto toString() { return #n14; } \
                 constexpr bool operator==(const n14&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n14>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n15                                      \
             {                                      \
-                constexpr static int value = start + 15;\
+                constexpr static int value = start + 15 - 1; \
                 constexpr static auto toString() { return #n15; } \
                 constexpr bool operator==(const n15&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n15>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n16                                      \
             {                                      \
-                constexpr static int value = start + 16;\
+                constexpr static int value = start + 16 - 1; \
                 constexpr static auto toString() { return #n16; } \
                 constexpr bool operator==(const n16&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n16>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-            static Types::n12 n12; \
-            static Types::n13 n13; \
-            static Types::n14 n14; \
-            static Types::n15 n15; \
-            static Types::n16 n16; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11, Types::n12, Types::n13, Types::n14, \
-            Types::n15, Types::n16>;                                      \
-    struct detail                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
     {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n12) const \
-                                \
-                {                                      \
-                    return name::Types::n12::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n13) const \
-                                \
-                {                                      \
-                    return name::Types::n13::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n14) const \
-                                \
-                {                                      \
-                    return name::Types::n14::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n15) const \
-                                \
-                {                                      \
-                    return name::Types::n15::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n16) const \
-                                \
-                {                                      \
-                    return name::Types::n16::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+                    using n12 = name_types::Types::n12; \
+                    using n13 = name_types::Types::n13; \
+                    using n14 = name_types::Types::n14; \
+                    using n15 = name_types::Types::n15; \
+                    using n16 = name_types::Types::n16; \
+         \
     };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                    if (str == Types::n12::toString())  return Types::n12{}; \
-                        \
-                    if (str == Types::n13::toString())  return Types::n13{}; \
-                        \
-                    if (str == Types::n14::toString())  return Types::n14{}; \
-                        \
-                    if (str == Types::n15::toString())  return Types::n15{}; \
-                        \
-                    if (str == Types::n16::toString())  return Types::n16{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+            constexpr static Types::n12 n12{}; \
+            constexpr static Types::n13 n13{}; \
+            constexpr static Types::n14 n14{}; \
+            constexpr static Types::n15 n15{}; \
+            constexpr static Types::n16 n16{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n12::toString()) return \
+                        name_types::Types::n12{}; \
+                    if (str == name_types::Types::n13::toString()) return \
+                        name_types::Types::n13{}; \
+                    if (str == name_types::Types::n14::toString()) return \
+                        name_types::Types::n14{}; \
+                    if (str == name_types::Types::n15::toString()) return \
+                        name_types::Types::n15{}; \
+                    if (str == name_types::Types::n16::toString()) return \
+                        name_types::Types::n16{}; \
+                    \
+        return{};\
+    }\
 };
-
 #define branchless_enum_17(name, start_value, operators , n1, n2, n3, n4, n5, \
     n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, \
     n17 )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11; \
             struct n12; struct n13; struct n14; struct n15; struct n16; \
@@ -3448,379 +2607,281 @@ struct name                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17>; \
             \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n12                                      \
             {                                      \
-                constexpr static int value = start + 12;\
+                constexpr static int value = start + 12 - 1; \
                 constexpr static auto toString() { return #n12; } \
                 constexpr bool operator==(const n12&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n12>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n13                                      \
             {                                      \
-                constexpr static int value = start + 13;\
+                constexpr static int value = start + 13 - 1; \
                 constexpr static auto toString() { return #n13; } \
                 constexpr bool operator==(const n13&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n13>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n14                                      \
             {                                      \
-                constexpr static int value = start + 14;\
+                constexpr static int value = start + 14 - 1; \
                 constexpr static auto toString() { return #n14; } \
                 constexpr bool operator==(const n14&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n14>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n15                                      \
             {                                      \
-                constexpr static int value = start + 15;\
+                constexpr static int value = start + 15 - 1; \
                 constexpr static auto toString() { return #n15; } \
                 constexpr bool operator==(const n15&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n15>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n16                                      \
             {                                      \
-                constexpr static int value = start + 16;\
+                constexpr static int value = start + 16 - 1; \
                 constexpr static auto toString() { return #n16; } \
                 constexpr bool operator==(const n16&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n16>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n17                                      \
             {                                      \
-                constexpr static int value = start + 17;\
+                constexpr static int value = start + 17 - 1; \
                 constexpr static auto toString() { return #n17; } \
                 constexpr bool operator==(const n17&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n17>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-            static Types::n12 n12; \
-            static Types::n13 n13; \
-            static Types::n14 n14; \
-            static Types::n15 n15; \
-            static Types::n16 n16; \
-            static Types::n17 n17; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11, Types::n12, Types::n13, Types::n14, \
-            Types::n15, Types::n16, Types::n17>; \
-            \
-    struct detail                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
     {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n12) const \
-                                \
-                {                                      \
-                    return name::Types::n12::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n13) const \
-                                \
-                {                                      \
-                    return name::Types::n13::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n14) const \
-                                \
-                {                                      \
-                    return name::Types::n14::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n15) const \
-                                \
-                {                                      \
-                    return name::Types::n15::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n16) const \
-                                \
-                {                                      \
-                    return name::Types::n16::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n17) const \
-                                \
-                {                                      \
-                    return name::Types::n17::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+                    using n12 = name_types::Types::n12; \
+                    using n13 = name_types::Types::n13; \
+                    using n14 = name_types::Types::n14; \
+                    using n15 = name_types::Types::n15; \
+                    using n16 = name_types::Types::n16; \
+                    using n17 = name_types::Types::n17; \
+         \
     };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                    if (str == Types::n12::toString())  return Types::n12{}; \
-                        \
-                    if (str == Types::n13::toString())  return Types::n13{}; \
-                        \
-                    if (str == Types::n14::toString())  return Types::n14{}; \
-                        \
-                    if (str == Types::n15::toString())  return Types::n15{}; \
-                        \
-                    if (str == Types::n16::toString())  return Types::n16{}; \
-                        \
-                    if (str == Types::n17::toString())  return Types::n17{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+            constexpr static Types::n12 n12{}; \
+            constexpr static Types::n13 n13{}; \
+            constexpr static Types::n14 n14{}; \
+            constexpr static Types::n15 n15{}; \
+            constexpr static Types::n16 n16{}; \
+            constexpr static Types::n17 n17{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n12::toString()) return \
+                        name_types::Types::n12{}; \
+                    if (str == name_types::Types::n13::toString()) return \
+                        name_types::Types::n13{}; \
+                    if (str == name_types::Types::n14::toString()) return \
+                        name_types::Types::n14{}; \
+                    if (str == name_types::Types::n15::toString()) return \
+                        name_types::Types::n15{}; \
+                    if (str == name_types::Types::n16::toString()) return \
+                        name_types::Types::n16{}; \
+                    if (str == name_types::Types::n17::toString()) return \
+                        name_types::Types::n17{}; \
+                    \
+        return{};\
+    }\
 };
-
 #define branchless_enum_18(name, start_value, operators , n1, n2, n3, n4, n5, \
     n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, \
     n18 )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11; \
             struct n12; struct n13; struct n14; struct n15; struct n16; \
@@ -3829,398 +2890,294 @@ struct name                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, \
             n18>;                                      \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n12                                      \
             {                                      \
-                constexpr static int value = start + 12;\
+                constexpr static int value = start + 12 - 1; \
                 constexpr static auto toString() { return #n12; } \
                 constexpr bool operator==(const n12&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n12>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n13                                      \
             {                                      \
-                constexpr static int value = start + 13;\
+                constexpr static int value = start + 13 - 1; \
                 constexpr static auto toString() { return #n13; } \
                 constexpr bool operator==(const n13&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n13>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n14                                      \
             {                                      \
-                constexpr static int value = start + 14;\
+                constexpr static int value = start + 14 - 1; \
                 constexpr static auto toString() { return #n14; } \
                 constexpr bool operator==(const n14&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n14>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n15                                      \
             {                                      \
-                constexpr static int value = start + 15;\
+                constexpr static int value = start + 15 - 1; \
                 constexpr static auto toString() { return #n15; } \
                 constexpr bool operator==(const n15&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n15>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n16                                      \
             {                                      \
-                constexpr static int value = start + 16;\
+                constexpr static int value = start + 16 - 1; \
                 constexpr static auto toString() { return #n16; } \
                 constexpr bool operator==(const n16&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n16>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n17                                      \
             {                                      \
-                constexpr static int value = start + 17;\
+                constexpr static int value = start + 17 - 1; \
                 constexpr static auto toString() { return #n17; } \
                 constexpr bool operator==(const n17&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n17>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n18                                      \
             {                                      \
-                constexpr static int value = start + 18;\
+                constexpr static int value = start + 18 - 1; \
                 constexpr static auto toString() { return #n18; } \
                 constexpr bool operator==(const n18&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n18>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-            static Types::n12 n12; \
-            static Types::n13 n13; \
-            static Types::n14 n14; \
-            static Types::n15 n15; \
-            static Types::n16 n16; \
-            static Types::n17 n17; \
-            static Types::n18 n18; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11, Types::n12, Types::n13, Types::n14, \
-            Types::n15, Types::n16, Types::n17, Types::n18>; \
-            \
-    struct detail                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
     {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n12) const \
-                                \
-                {                                      \
-                    return name::Types::n12::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n13) const \
-                                \
-                {                                      \
-                    return name::Types::n13::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n14) const \
-                                \
-                {                                      \
-                    return name::Types::n14::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n15) const \
-                                \
-                {                                      \
-                    return name::Types::n15::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n16) const \
-                                \
-                {                                      \
-                    return name::Types::n16::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n17) const \
-                                \
-                {                                      \
-                    return name::Types::n17::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n18) const \
-                                \
-                {                                      \
-                    return name::Types::n18::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+                    using n12 = name_types::Types::n12; \
+                    using n13 = name_types::Types::n13; \
+                    using n14 = name_types::Types::n14; \
+                    using n15 = name_types::Types::n15; \
+                    using n16 = name_types::Types::n16; \
+                    using n17 = name_types::Types::n17; \
+                    using n18 = name_types::Types::n18; \
+         \
     };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                    if (str == Types::n12::toString())  return Types::n12{}; \
-                        \
-                    if (str == Types::n13::toString())  return Types::n13{}; \
-                        \
-                    if (str == Types::n14::toString())  return Types::n14{}; \
-                        \
-                    if (str == Types::n15::toString())  return Types::n15{}; \
-                        \
-                    if (str == Types::n16::toString())  return Types::n16{}; \
-                        \
-                    if (str == Types::n17::toString())  return Types::n17{}; \
-                        \
-                    if (str == Types::n18::toString())  return Types::n18{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+            constexpr static Types::n12 n12{}; \
+            constexpr static Types::n13 n13{}; \
+            constexpr static Types::n14 n14{}; \
+            constexpr static Types::n15 n15{}; \
+            constexpr static Types::n16 n16{}; \
+            constexpr static Types::n17 n17{}; \
+            constexpr static Types::n18 n18{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n12::toString()) return \
+                        name_types::Types::n12{}; \
+                    if (str == name_types::Types::n13::toString()) return \
+                        name_types::Types::n13{}; \
+                    if (str == name_types::Types::n14::toString()) return \
+                        name_types::Types::n14{}; \
+                    if (str == name_types::Types::n15::toString()) return \
+                        name_types::Types::n15{}; \
+                    if (str == name_types::Types::n16::toString()) return \
+                        name_types::Types::n16{}; \
+                    if (str == name_types::Types::n17::toString()) return \
+                        name_types::Types::n17{}; \
+                    if (str == name_types::Types::n18::toString()) return \
+                        name_types::Types::n18{}; \
+                    \
+        return{};\
+    }\
 };
-
 #define branchless_enum_19(name, start_value, operators , n1, n2, n3, n4, n5, \
     n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, \
     n19 )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11; \
             struct n12; struct n13; struct n14; struct n15; struct n16; \
@@ -4229,417 +3186,309 @@ struct name                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, \
             n18, n19>;                                      \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n12                                      \
             {                                      \
-                constexpr static int value = start + 12;\
+                constexpr static int value = start + 12 - 1; \
                 constexpr static auto toString() { return #n12; } \
                 constexpr bool operator==(const n12&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n12>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n13                                      \
             {                                      \
-                constexpr static int value = start + 13;\
+                constexpr static int value = start + 13 - 1; \
                 constexpr static auto toString() { return #n13; } \
                 constexpr bool operator==(const n13&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n13>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n14                                      \
             {                                      \
-                constexpr static int value = start + 14;\
+                constexpr static int value = start + 14 - 1; \
                 constexpr static auto toString() { return #n14; } \
                 constexpr bool operator==(const n14&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n14>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n15                                      \
             {                                      \
-                constexpr static int value = start + 15;\
+                constexpr static int value = start + 15 - 1; \
                 constexpr static auto toString() { return #n15; } \
                 constexpr bool operator==(const n15&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n15>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n16                                      \
             {                                      \
-                constexpr static int value = start + 16;\
+                constexpr static int value = start + 16 - 1; \
                 constexpr static auto toString() { return #n16; } \
                 constexpr bool operator==(const n16&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n16>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n17                                      \
             {                                      \
-                constexpr static int value = start + 17;\
+                constexpr static int value = start + 17 - 1; \
                 constexpr static auto toString() { return #n17; } \
                 constexpr bool operator==(const n17&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n17>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n18                                      \
             {                                      \
-                constexpr static int value = start + 18;\
+                constexpr static int value = start + 18 - 1; \
                 constexpr static auto toString() { return #n18; } \
                 constexpr bool operator==(const n18&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n18>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n19                                      \
             {                                      \
-                constexpr static int value = start + 19;\
+                constexpr static int value = start + 19 - 1; \
                 constexpr static auto toString() { return #n19; } \
                 constexpr bool operator==(const n19&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n19>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-            static Types::n12 n12; \
-            static Types::n13 n13; \
-            static Types::n14 n14; \
-            static Types::n15 n15; \
-            static Types::n16 n16; \
-            static Types::n17 n17; \
-            static Types::n18 n18; \
-            static Types::n19 n19; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11, Types::n12, Types::n13, Types::n14, \
-            Types::n15, Types::n16, Types::n17, Types::n18, Types::n19>; \
-            \
-    struct detail                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
     {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n12) const \
-                                \
-                {                                      \
-                    return name::Types::n12::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n13) const \
-                                \
-                {                                      \
-                    return name::Types::n13::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n14) const \
-                                \
-                {                                      \
-                    return name::Types::n14::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n15) const \
-                                \
-                {                                      \
-                    return name::Types::n15::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n16) const \
-                                \
-                {                                      \
-                    return name::Types::n16::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n17) const \
-                                \
-                {                                      \
-                    return name::Types::n17::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n18) const \
-                                \
-                {                                      \
-                    return name::Types::n18::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n19) const \
-                                \
-                {                                      \
-                    return name::Types::n19::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+                    using n12 = name_types::Types::n12; \
+                    using n13 = name_types::Types::n13; \
+                    using n14 = name_types::Types::n14; \
+                    using n15 = name_types::Types::n15; \
+                    using n16 = name_types::Types::n16; \
+                    using n17 = name_types::Types::n17; \
+                    using n18 = name_types::Types::n18; \
+                    using n19 = name_types::Types::n19; \
+         \
     };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                    if (str == Types::n12::toString())  return Types::n12{}; \
-                        \
-                    if (str == Types::n13::toString())  return Types::n13{}; \
-                        \
-                    if (str == Types::n14::toString())  return Types::n14{}; \
-                        \
-                    if (str == Types::n15::toString())  return Types::n15{}; \
-                        \
-                    if (str == Types::n16::toString())  return Types::n16{}; \
-                        \
-                    if (str == Types::n17::toString())  return Types::n17{}; \
-                        \
-                    if (str == Types::n18::toString())  return Types::n18{}; \
-                        \
-                    if (str == Types::n19::toString())  return Types::n19{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+            constexpr static Types::n12 n12{}; \
+            constexpr static Types::n13 n13{}; \
+            constexpr static Types::n14 n14{}; \
+            constexpr static Types::n15 n15{}; \
+            constexpr static Types::n16 n16{}; \
+            constexpr static Types::n17 n17{}; \
+            constexpr static Types::n18 n18{}; \
+            constexpr static Types::n19 n19{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18, \
+        name_types::Types::n19>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18, \
+        name_types::Types::n19>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n12::toString()) return \
+                        name_types::Types::n12{}; \
+                    if (str == name_types::Types::n13::toString()) return \
+                        name_types::Types::n13{}; \
+                    if (str == name_types::Types::n14::toString()) return \
+                        name_types::Types::n14{}; \
+                    if (str == name_types::Types::n15::toString()) return \
+                        name_types::Types::n15{}; \
+                    if (str == name_types::Types::n16::toString()) return \
+                        name_types::Types::n16{}; \
+                    if (str == name_types::Types::n17::toString()) return \
+                        name_types::Types::n17{}; \
+                    if (str == name_types::Types::n18::toString()) return \
+                        name_types::Types::n18{}; \
+                    if (str == name_types::Types::n19::toString()) return \
+                        name_types::Types::n19{}; \
+                    \
+        return{};\
+    }\
 };
-
 #define branchless_enum_20(name, start_value, operators , n1, n2, n3, n4, n5, \
     n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, \
     n20 )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
+struct name_types \
+{ \
+    struct Types \
+    { \
         struct n1; struct n2; struct n3; struct n4; struct n5; struct n6; \
             struct n7; struct n8; struct n9; struct n10; struct n11; \
             struct n12; struct n13; struct n14; struct n15; struct n16; \
@@ -4648,426 +3497,312 @@ struct name                                      \
         constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
             n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, \
             n18, n19, n20>;                                      \
-        constexpr static int start = start_value - 1; \
+        constexpr static int start = start_value; \
             \
                     struct n1                                      \
             {                                      \
-                constexpr static int value = start + 1;\
+                constexpr static int value = start + 1 - 1; \
                 constexpr static auto toString() { return #n1; } \
                 constexpr bool operator==(const n1&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n1>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n2                                      \
             {                                      \
-                constexpr static int value = start + 2;\
+                constexpr static int value = start + 2 - 1; \
                 constexpr static auto toString() { return #n2; } \
                 constexpr bool operator==(const n2&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n2>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n3                                      \
             {                                      \
-                constexpr static int value = start + 3;\
+                constexpr static int value = start + 3 - 1; \
                 constexpr static auto toString() { return #n3; } \
                 constexpr bool operator==(const n3&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n3>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n4                                      \
             {                                      \
-                constexpr static int value = start + 4;\
+                constexpr static int value = start + 4 - 1; \
                 constexpr static auto toString() { return #n4; } \
                 constexpr bool operator==(const n4&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n4>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n5                                      \
             {                                      \
-                constexpr static int value = start + 5;\
+                constexpr static int value = start + 5 - 1; \
                 constexpr static auto toString() { return #n5; } \
                 constexpr bool operator==(const n5&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n5>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n6                                      \
             {                                      \
-                constexpr static int value = start + 6;\
+                constexpr static int value = start + 6 - 1; \
                 constexpr static auto toString() { return #n6; } \
                 constexpr bool operator==(const n6&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n6>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n7                                      \
             {                                      \
-                constexpr static int value = start + 7;\
+                constexpr static int value = start + 7 - 1; \
                 constexpr static auto toString() { return #n7; } \
                 constexpr bool operator==(const n7&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n7>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n8                                      \
             {                                      \
-                constexpr static int value = start + 8;\
+                constexpr static int value = start + 8 - 1; \
                 constexpr static auto toString() { return #n8; } \
                 constexpr bool operator==(const n8&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n8>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n9                                      \
             {                                      \
-                constexpr static int value = start + 9;\
+                constexpr static int value = start + 9 - 1; \
                 constexpr static auto toString() { return #n9; } \
                 constexpr bool operator==(const n9&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n9>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n10                                      \
             {                                      \
-                constexpr static int value = start + 10;\
+                constexpr static int value = start + 10 - 1; \
                 constexpr static auto toString() { return #n10; } \
                 constexpr bool operator==(const n10&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n10>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n11                                      \
             {                                      \
-                constexpr static int value = start + 11;\
+                constexpr static int value = start + 11 - 1; \
                 constexpr static auto toString() { return #n11; } \
                 constexpr bool operator==(const n11&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n11>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n12                                      \
             {                                      \
-                constexpr static int value = start + 12;\
+                constexpr static int value = start + 12 - 1; \
                 constexpr static auto toString() { return #n12; } \
                 constexpr bool operator==(const n12&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n12>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n13                                      \
             {                                      \
-                constexpr static int value = start + 13;\
+                constexpr static int value = start + 13 - 1; \
                 constexpr static auto toString() { return #n13; } \
                 constexpr bool operator==(const n13&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n13>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n14                                      \
             {                                      \
-                constexpr static int value = start + 14;\
+                constexpr static int value = start + 14 - 1; \
                 constexpr static auto toString() { return #n14; } \
                 constexpr bool operator==(const n14&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n14>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n15                                      \
             {                                      \
-                constexpr static int value = start + 15;\
+                constexpr static int value = start + 15 - 1; \
                 constexpr static auto toString() { return #n15; } \
                 constexpr bool operator==(const n15&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n15>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n16                                      \
             {                                      \
-                constexpr static int value = start + 16;\
+                constexpr static int value = start + 16 - 1; \
                 constexpr static auto toString() { return #n16; } \
                 constexpr bool operator==(const n16&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n16>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n17                                      \
             {                                      \
-                constexpr static int value = start + 17;\
+                constexpr static int value = start + 17 - 1; \
                 constexpr static auto toString() { return #n17; } \
                 constexpr bool operator==(const n17&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n17>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n18                                      \
             {                                      \
-                constexpr static int value = start + 18;\
+                constexpr static int value = start + 18 - 1; \
                 constexpr static auto toString() { return #n18; } \
                 constexpr bool operator==(const n18&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n18>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n19                                      \
             {                                      \
-                constexpr static int value = start + 19;\
+                constexpr static int value = start + 19 - 1; \
                 constexpr static auto toString() { return #n19; } \
                 constexpr bool operator==(const n19&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n19>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
                     struct n20                                      \
             {                                      \
-                constexpr static int value = start + 20;\
+                constexpr static int value = start + 20 - 1; \
                 constexpr static auto toString() { return #n20; } \
                 constexpr bool operator==(const n20&) const { return true; } \
                 template <typename T, \
-                    typename = std::enable_if_t<!std::is_same<T, \
-                    n20>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
+                    typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; \
                     }\
             }; \
-            };                                      \
-            static Types::n1 n1; \
-            static Types::n2 n2; \
-            static Types::n3 n3; \
-            static Types::n4 n4; \
-            static Types::n5 n5; \
-            static Types::n6 n6; \
-            static Types::n7 n7; \
-            static Types::n8 n8; \
-            static Types::n9 n9; \
-            static Types::n10 n10; \
-            static Types::n11 n11; \
-            static Types::n12 n12; \
-            static Types::n13 n13; \
-            static Types::n14 n14; \
-            static Types::n15 n15; \
-            static Types::n16 n16; \
-            static Types::n17 n17; \
-            static Types::n18 n18; \
-            static Types::n19 n19; \
-            static Types::n20 n20; \
-        using Type = boost::variant<Types::n1, Types::n2, Types::n3, \
-            Types::n4, Types::n5, Types::n6, Types::n7, Types::n8, Types::n9, \
-            Types::n10, Types::n11, Types::n12, Types::n13, Types::n14, \
-            Types::n15, Types::n16, Types::n17, Types::n18, Types::n19, \
-            Types::n20>;                                      \
-    struct detail                                      \
+         \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
     {                                      \
-        struct value_visitor : public boost::static_visitor<int> \
-            \
-        {                                      \
-                            constexpr int operator()(name::Types::n1) const \
-                                \
-                {                                      \
-                    return name::Types::n1::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n2) const \
-                                \
-                {                                      \
-                    return name::Types::n2::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n3) const \
-                                \
-                {                                      \
-                    return name::Types::n3::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n4) const \
-                                \
-                {                                      \
-                    return name::Types::n4::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n5) const \
-                                \
-                {                                      \
-                    return name::Types::n5::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n6) const \
-                                \
-                {                                      \
-                    return name::Types::n6::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n7) const \
-                                \
-                {                                      \
-                    return name::Types::n7::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n8) const \
-                                \
-                {                                      \
-                    return name::Types::n8::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n9) const \
-                                \
-                {                                      \
-                    return name::Types::n9::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n10) const \
-                                \
-                {                                      \
-                    return name::Types::n10::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n11) const \
-                                \
-                {                                      \
-                    return name::Types::n11::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n12) const \
-                                \
-                {                                      \
-                    return name::Types::n12::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n13) const \
-                                \
-                {                                      \
-                    return name::Types::n13::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n14) const \
-                                \
-                {                                      \
-                    return name::Types::n14::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n15) const \
-                                \
-                {                                      \
-                    return name::Types::n15::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n16) const \
-                                \
-                {                                      \
-                    return name::Types::n16::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n17) const \
-                                \
-                {                                      \
-                    return name::Types::n17::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n18) const \
-                                \
-                {                                      \
-                    return name::Types::n18::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n19) const \
-                                \
-                {                                      \
-                    return name::Types::n19::value; \
-                        \
-                }                                      \
-                            constexpr int operator()(name::Types::n20) const \
-                                \
-                {                                      \
-                    return name::Types::n20::value; \
-                        \
-                }                                      \
-                    };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t); \
-                \
-        }                                      \
+                    using n1 = name_types::Types::n1; \
+                    using n2 = name_types::Types::n2; \
+                    using n3 = name_types::Types::n3; \
+                    using n4 = name_types::Types::n4; \
+                    using n5 = name_types::Types::n5; \
+                    using n6 = name_types::Types::n6; \
+                    using n7 = name_types::Types::n7; \
+                    using n8 = name_types::Types::n8; \
+                    using n9 = name_types::Types::n9; \
+                    using n10 = name_types::Types::n10; \
+                    using n11 = name_types::Types::n11; \
+                    using n12 = name_types::Types::n12; \
+                    using n13 = name_types::Types::n13; \
+                    using n14 = name_types::Types::n14; \
+                    using n15 = name_types::Types::n15; \
+                    using n16 = name_types::Types::n16; \
+                    using n17 = name_types::Types::n17; \
+                    using n18 = name_types::Types::n18; \
+                    using n19 = name_types::Types::n19; \
+                    using n20 = name_types::Types::n20; \
+         \
     };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return \
-            val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-                    if (str == Types::n1::toString())  return Types::n1{}; \
-                        \
-                    if (str == Types::n2::toString())  return Types::n2{}; \
-                        \
-                    if (str == Types::n3::toString())  return Types::n3{}; \
-                        \
-                    if (str == Types::n4::toString())  return Types::n4{}; \
-                        \
-                    if (str == Types::n5::toString())  return Types::n5{}; \
-                        \
-                    if (str == Types::n6::toString())  return Types::n6{}; \
-                        \
-                    if (str == Types::n7::toString())  return Types::n7{}; \
-                        \
-                    if (str == Types::n8::toString())  return Types::n8{}; \
-                        \
-                    if (str == Types::n9::toString())  return Types::n9{}; \
-                        \
-                    if (str == Types::n10::toString())  return Types::n10{}; \
-                        \
-                    if (str == Types::n11::toString())  return Types::n11{}; \
-                        \
-                    if (str == Types::n12::toString())  return Types::n12{}; \
-                        \
-                    if (str == Types::n13::toString())  return Types::n13{}; \
-                        \
-                    if (str == Types::n14::toString())  return Types::n14{}; \
-                        \
-                    if (str == Types::n15::toString())  return Types::n15{}; \
-                        \
-                    if (str == Types::n16::toString())  return Types::n16{}; \
-                        \
-                    if (str == Types::n17::toString())  return Types::n17{}; \
-                        \
-                    if (str == Types::n18::toString())  return Types::n18{}; \
-                        \
-                    if (str == Types::n19::toString())  return Types::n19{}; \
-                        \
-                    if (str == Types::n20::toString())  return Types::n20{}; \
-                        \
-                                               \
-        return{};                               \
-    }                               \
+            constexpr static Types::n1 n1{}; \
+            constexpr static Types::n2 n2{}; \
+            constexpr static Types::n3 n3{}; \
+            constexpr static Types::n4 n4{}; \
+            constexpr static Types::n5 n5{}; \
+            constexpr static Types::n6 n6{}; \
+            constexpr static Types::n7 n7{}; \
+            constexpr static Types::n8 n8{}; \
+            constexpr static Types::n9 n9{}; \
+            constexpr static Types::n10 n10{}; \
+            constexpr static Types::n11 n11{}; \
+            constexpr static Types::n12 n12{}; \
+            constexpr static Types::n13 n13{}; \
+            constexpr static Types::n14 n14{}; \
+            constexpr static Types::n15 n15{}; \
+            constexpr static Types::n16 n16{}; \
+            constexpr static Types::n17 n17{}; \
+            constexpr static Types::n18 n18{}; \
+            constexpr static Types::n19 n19{}; \
+            constexpr static Types::n20 n20{}; \
+     \
+    using Type = branchless::variant<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18, \
+        name_types::Types::n19, name_types::Types::n20>; \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18, \
+        name_types::Types::n19, name_types::Types::n20>(); \
+\
+    template <typename T, \
+              typename = \
+                  std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+                    if (str == name_types::Types::n1::toString()) return \
+                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n2::toString()) return \
+                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n3::toString()) return \
+                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n4::toString()) return \
+                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n5::toString()) return \
+                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n6::toString()) return \
+                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n7::toString()) return \
+                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n8::toString()) return \
+                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n9::toString()) return \
+                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n10::toString()) return \
+                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n11::toString()) return \
+                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n12::toString()) return \
+                        name_types::Types::n12{}; \
+                    if (str == name_types::Types::n13::toString()) return \
+                        name_types::Types::n13{}; \
+                    if (str == name_types::Types::n14::toString()) return \
+                        name_types::Types::n14{}; \
+                    if (str == name_types::Types::n15::toString()) return \
+                        name_types::Types::n15{}; \
+                    if (str == name_types::Types::n16::toString()) return \
+                        name_types::Types::n16{}; \
+                    if (str == name_types::Types::n17::toString()) return \
+                        name_types::Types::n17{}; \
+                    if (str == name_types::Types::n18::toString()) return \
+                        name_types::Types::n18{}; \
+                    if (str == name_types::Types::n19::toString()) return \
+                        name_types::Types::n19{}; \
+                    if (str == name_types::Types::n20::toString()) return \
+                        name_types::Types::n20{}; \
+                    \
+        return{};\
+    }\
 };
-
