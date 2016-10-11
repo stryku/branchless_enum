@@ -10,7 +10,7 @@ namespace branchless
     template <typename ...types>
     struct variant
     {
-        int value{ -1 };
+        int value;
 
         template <typename T>
         constexpr static auto is_one_of_types = is_any_of_v<T, types...>;
