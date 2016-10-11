@@ -40,10 +40,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        $for j[[struct n$j;]] \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T $for j[[, n$j]]>;                                      \
-        constexpr static int start = start_value - 1;                                      \
         $for j[[
             using n$j = name_types::Types::n$j; \
         ]] \
@@ -51,8 +47,8 @@ struct name \
     $for j[[
         constexpr static Types::n$j n$j{}; \
     ]] \
-    using Type = branchless::variant<$for j[[, name_types::Types::n$j]]>; \
-    constexpr static const auto nameArray = make_array<$for j[[, name_types::Types::n$j]]>(); \
+    using Type = branchless::variant<$for j , [[name_types::Types::n$j]]>; \
+    constexpr static const auto nameArray = make_array<$for j , [[name_types::Types::n$j]]>(); \
 \
     template <typename T, \
               typename = std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \

@@ -1,5 +1,6 @@
 #include "include/branchless_variant.hpp"
-#include "example_output.hpp"
+//#include "example_output.hpp"
+#include "include/branchless_enum.hpp"
 #include "branch_enum.hpp"
 
 #include <iostream>
@@ -15,6 +16,8 @@ struct B
     constexpr static int value = 1;
     constexpr static auto toString() { return "B"; }
 };
+
+
 
 class my_visitor
 {
@@ -32,6 +35,8 @@ public:
 
 int count;
 
+
+branchless_enum(be, name_1, name_2);
 
 struct branchless_function
 {

@@ -36,20 +36,14 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
          \
     };                                      \
             constexpr static Types::n1 n1{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1>(); \
+    using Type = branchless::variant<name_types::Types::n1>; \
+    constexpr static const auto nameArray = \
+        make_array<name_types::Types::n1>(); \
 \
     template <typename T, \
               typename = \
@@ -108,12 +102,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
          \
@@ -121,10 +109,10 @@ struct name \
             constexpr static Types::n1 n1{}; \
             constexpr static Types::n2 n2{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2>(); \
 \
     template <typename T, \
               typename = \
@@ -194,12 +182,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -209,11 +191,10 @@ struct name \
             constexpr static Types::n2 n2{}; \
             constexpr static Types::n3 n3{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, \
-        name_types::Types::n3>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3>(); \
 \
     template <typename T, \
               typename = \
@@ -294,12 +275,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4>;                                      \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -311,11 +286,11 @@ struct name \
             constexpr static Types::n3 n3{}; \
             constexpr static Types::n4 n4{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4>; \
         \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, \
         name_types::Types::n4>(); \
 \
     template <typename T, \
@@ -408,12 +383,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5>;                                      \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -427,12 +396,12 @@ struct name \
             constexpr static Types::n4 n4{}; \
             constexpr static Types::n5 n5{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5>(); \
 \
     template <typename T, \
               typename = \
@@ -535,12 +504,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6>;                                      \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -556,13 +519,12 @@ struct name \
             constexpr static Types::n5 n5{}; \
             constexpr static Types::n6 n6{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, \
-        name_types::Types::n6>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6>(); \
 \
     template <typename T, \
               typename = \
@@ -677,12 +639,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6;struct n7; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7>;                                      \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -700,13 +656,13 @@ struct name \
             constexpr static Types::n6 n6{}; \
             constexpr static Types::n7 n7{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7>; \
         \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, \
         name_types::Types::n7>(); \
 \
     template <typename T, \
@@ -833,13 +789,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8>;                                      \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -859,14 +808,14 @@ struct name \
             constexpr static Types::n7 n7{}; \
             constexpr static Types::n8 n8{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8>(); \
 \
     template <typename T, \
               typename = \
@@ -1003,13 +952,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9>;                                      \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -1031,15 +973,14 @@ struct name \
             constexpr static Types::n8 n8{}; \
             constexpr static Types::n9 n9{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, \
-        name_types::Types::n9>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9>(); \
 \
     template <typename T, \
               typename = \
@@ -1188,14 +1129,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -1219,15 +1152,15 @@ struct name \
             constexpr static Types::n9 n9{}; \
             constexpr static Types::n10 n10{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, \
         name_types::Types::n10>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, \
         name_types::Types::n10>(); \
 \
     template <typename T, \
@@ -1388,14 +1321,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -1421,16 +1346,16 @@ struct name \
             constexpr static Types::n10 n10{}; \
             constexpr static Types::n11 n11{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11>(); \
 \
     template <typename T, \
               typename = \
@@ -1602,14 +1527,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11;struct n12; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11, n12>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -1637,17 +1554,16 @@ struct name \
             constexpr static Types::n11 n11{}; \
             constexpr static Types::n12 n12{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11, name_types::Types::n12>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11, \
-        name_types::Types::n12>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12>(); \
 \
     template <typename T, \
               typename = \
@@ -1831,15 +1747,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11;struct n12; \
-            struct n13; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11, n12, n13>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -1869,18 +1776,18 @@ struct name \
             constexpr static Types::n12 n12{}; \
             constexpr static Types::n13 n13{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11, name_types::Types::n12, \
         name_types::Types::n13>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11, \
-        name_types::Types::n12, name_types::Types::n13>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13>(); \
 \
     template <typename T, \
               typename = \
@@ -2075,15 +1982,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11;struct n12; \
-            struct n13;struct n14; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -2115,19 +2013,18 @@ struct name \
             constexpr static Types::n13 n13{}; \
             constexpr static Types::n14 n14{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11, name_types::Types::n12, \
         name_types::Types::n13, name_types::Types::n14>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11, \
-        name_types::Types::n12, name_types::Types::n13, \
-        name_types::Types::n14>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14>(); \
 \
     template <typename T, \
               typename = \
@@ -2333,15 +2230,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11;struct n12; \
-            struct n13;struct n14;struct n15; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -2375,20 +2263,20 @@ struct name \
             constexpr static Types::n14 n14{}; \
             constexpr static Types::n15 n15{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11, name_types::Types::n12, \
         name_types::Types::n13, name_types::Types::n14, \
         name_types::Types::n15>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11, \
-        name_types::Types::n12, name_types::Types::n13, \
-        name_types::Types::n14, name_types::Types::n15>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15>(); \
 \
     template <typename T, \
               typename = \
@@ -2605,15 +2493,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11;struct n12; \
-            struct n13;struct n14;struct n15;struct n16; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -2649,21 +2528,20 @@ struct name \
             constexpr static Types::n15 n15{}; \
             constexpr static Types::n16 n16{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11, name_types::Types::n12, \
         name_types::Types::n13, name_types::Types::n14, \
         name_types::Types::n15, name_types::Types::n16>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11, \
-        name_types::Types::n12, name_types::Types::n13, \
-        name_types::Types::n14, name_types::Types::n15, \
-        name_types::Types::n16>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16>(); \
 \
     template <typename T, \
               typename = \
@@ -2892,15 +2770,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11;struct n12; \
-            struct n13;struct n14;struct n15;struct n16;struct n17; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17>; \
-            \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -2938,7 +2807,7 @@ struct name \
             constexpr static Types::n16 n16{}; \
             constexpr static Types::n17 n17{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
@@ -2946,14 +2815,14 @@ struct name \
         name_types::Types::n13, name_types::Types::n14, \
         name_types::Types::n15, name_types::Types::n16, \
         name_types::Types::n17>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11, \
-        name_types::Types::n12, name_types::Types::n13, \
-        name_types::Types::n14, name_types::Types::n15, \
-        name_types::Types::n16, name_types::Types::n17>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17>(); \
 \
     template <typename T, \
               typename = \
@@ -3193,16 +3062,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11;struct n12; \
-            struct n13;struct n14;struct n15;struct n16;struct n17; \
-            struct n18; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, \
-            n18>;                                      \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -3242,7 +3101,7 @@ struct name \
             constexpr static Types::n17 n17{}; \
             constexpr static Types::n18 n18{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
@@ -3250,15 +3109,14 @@ struct name \
         name_types::Types::n13, name_types::Types::n14, \
         name_types::Types::n15, name_types::Types::n16, \
         name_types::Types::n17, name_types::Types::n18>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11, \
-        name_types::Types::n12, name_types::Types::n13, \
-        name_types::Types::n14, name_types::Types::n15, \
-        name_types::Types::n16, name_types::Types::n17, \
-        name_types::Types::n18>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18>(); \
 \
     template <typename T, \
               typename = \
@@ -3509,16 +3367,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11;struct n12; \
-            struct n13;struct n14;struct n15;struct n16;struct n17; \
-            struct n18;struct n19; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, \
-            n18, n19>;                                      \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -3560,7 +3408,7 @@ struct name \
             constexpr static Types::n18 n18{}; \
             constexpr static Types::n19 n19{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
@@ -3569,15 +3417,15 @@ struct name \
         name_types::Types::n15, name_types::Types::n16, \
         name_types::Types::n17, name_types::Types::n18, \
         name_types::Types::n19>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11, \
-        name_types::Types::n12, name_types::Types::n13, \
-        name_types::Types::n14, name_types::Types::n15, \
-        name_types::Types::n16, name_types::Types::n17, \
-        name_types::Types::n18, name_types::Types::n19>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18, \
+        name_types::Types::n19>(); \
 \
     template <typename T, \
               typename = \
@@ -3839,16 +3687,6 @@ struct name \
 { \
     struct Types                                      \
     {                                      \
-        struct n1;struct n2;struct n3;struct n4;struct n5;struct n6; \
-            struct n7;struct n8;struct n9;struct n10;struct n11;struct n12; \
-            struct n13;struct n14;struct n15;struct n16;struct n17; \
-            struct n18;struct n19;struct n20; \
-        template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T , n1, n2, n3, \
-            n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, \
-            n18, n19, n20>;                                      \
-        constexpr static int start = start_value - 1; \
-            \
                     using n1 = name_types::Types::n1; \
                     using n2 = name_types::Types::n2; \
                     using n3 = name_types::Types::n3; \
@@ -3892,7 +3730,7 @@ struct name \
             constexpr static Types::n19 n19{}; \
             constexpr static Types::n20 n20{}; \
      \
-    using Type = branchless::variant<, name_types::Types::n1, \
+    using Type = branchless::variant<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
@@ -3901,16 +3739,15 @@ struct name \
         name_types::Types::n15, name_types::Types::n16, \
         name_types::Types::n17, name_types::Types::n18, \
         name_types::Types::n19, name_types::Types::n20>; \
-    constexpr static const auto nameArray = make_array<, \
-        name_types::Types::n1, name_types::Types::n2, name_types::Types::n3, \
-        name_types::Types::n4, name_types::Types::n5, name_types::Types::n6, \
-        name_types::Types::n7, name_types::Types::n8, name_types::Types::n9, \
-        name_types::Types::n10, name_types::Types::n11, \
-        name_types::Types::n12, name_types::Types::n13, \
-        name_types::Types::n14, name_types::Types::n15, \
-        name_types::Types::n16, name_types::Types::n17, \
-        name_types::Types::n18, name_types::Types::n19, \
-        name_types::Types::n20>(); \
+    constexpr static const auto nameArray = make_array<name_types::Types::n1, \
+        name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18, \
+        name_types::Types::n19, name_types::Types::n20>(); \
 \
     template <typename T, \
               typename = \
