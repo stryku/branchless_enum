@@ -6,6 +6,7 @@ $var n = 20  $$ The maximum arity we support.
 $$}} This meta comment fixes auto-indentation in editors.
 
 #include "branchless_helpers.hpp"
+#include "branchless_variant.hpp"
 
 #include <boost/variant.hpp>
 
@@ -16,68 +17,57 @@ $for i [[
 $range j 1..i
 
 #define branchless_enum_$i(name, start_value, operators $for j [[, n$j]] )                                      \
-struct name                                      \
-{                                      \
-    struct Types                                      \
-    {                                      \
-        $for j [[struct n$j; ]] \
+struct name_types \
+{ \
+    struct Types \
+    { \
+        $for j[[struct n$j; ]] \
         template <typename T>                                      \
-        constexpr static bool is_this_type_v = is_any_of_v<T $for j [[, n$j]]>;                                      \
-        constexpr static int start = start_value - 1;                                      \
-        $for j [[
+        constexpr static bool is_this_type_v = is_any_of_v<T $for j[[, n$j]]>;                                      \
+        constexpr static int start = start_value;                                      \
+        $for j[[
             struct n$j                                      \
             {                                      \
-                constexpr static int value = start + $j;\
+                constexpr static int value = start + $j - 1; \
                 constexpr static auto toString() { return #n$j; } \
                 constexpr bool operator==(const n$j&) const { return true; } \
-                template <typename T, typename = std::enable_if_t<!std::is_same<T, n$j>::value && is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; }\
+                template <typename T, typename = std::enable_if_t<is_this_type_v<T>>> constexpr bool operator==(const T&) const { return false; }\
             }; \
-        ]]
+        ]] \
+    }; \
+}; \
+\
+struct name \
+{ \
+    struct Types                                      \
+    {                                      \
+        $for j[[
+            using n$j = name_types::Types::n$j; \
+        ]] \
     };                                      \
-    $for j [[
-        static Types::n$j n$j; \
-    ]]
-    using Type = boost::variant<$for j , [[Types::n$j]]>;                                      \
-    struct detail                                      \
-    {                                      \
-        struct value_visitor : public boost::static_visitor<int>                                      \
-        {                                      \
-            $for j [[
-                constexpr int operator()(name::Types::n$j) const                                      \
-                {                                      \
-                    return name::Types::n$j::value;                                      \
-                }                                      \
-            ]]
-        };                                      \
-        template <typename T>                                      \
-        static constexpr int value(T)                                      \
-        {                                      \
-            return T::value;                                      \
-        }                                      \
-        static int value(const Type &t)                                      \
-        {                                      \
-            return boost::apply_visitor(value_visitor{}, t);                                      \
-        }                                      \
-    };                                      \
-    template <typename T>                                      \
-    static constexpr auto toString(T)                                      \
-    {                                      \
-        return T::toString();                                      \
-    }                                      \
-    static auto toString(const Type &t)                                      \
-    {                                      \
-        return boost::apply_visitor([](const auto &val) { return val.toString(); }, \
-                                    t);                                      \
-    }                                      \
-    static Type fromString(const std::string &str)\
-    {                               \
-        $for j [[
-            if (str == Types::n$j::toString())  return Types::n$j{};                               \
+    $for j[[
+        constexpr static Types::n$j n$j{}; \
+    ]] \
+    using Type = branchless::variant<$for j , [[name_types::Types::n$j]]>; \
+    constexpr static const auto nameArray = make_array<$for j , [[name_types::Types::n$j]]>(); \
+\
+    template <typename T, \
+              typename = std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
+    static constexpr auto toString(const T&) \
+    { \
+        return T::toString(); \
+    } \
+    static auto toString(const Type& t) \
+    { \
+        return nameArray[t.value]; \
+    } \
+    static Type fromString(const std::string& str) \
+    { \
+        $for j[[
+            if (str == name_types::Types::n$j::toString()) return n$j; \
         ]]
-                                       \
-        return{};                               \
-    }                               \
+            \
+        return{};\
+    }\
 };
-
 ]]
-

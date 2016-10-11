@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <array>
 
 template<bool...> struct bool_pack;
 
@@ -18,6 +19,12 @@ using is_any_of = any_true<std::is_same<T, Args>::value...>;
 
 template <typename T, typename ...Args>
 constexpr bool is_any_of_v = is_any_of<T, Args...>::value;
+
+template <typename ...Types>
+constexpr auto make_array()->std::array<const char*, sizeof...(Types)>
+{
+    return { (Types::toString())... };
+}
 
 # define EMPTY(...)
 # define DEFER(...) __VA_ARGS__ EMPTY()
