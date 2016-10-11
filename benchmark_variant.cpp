@@ -5,7 +5,7 @@
 #include <iostream>
 #include <random>
 
-branchless_enum(branchless,
+branchless_enum(be,
                 name_1,
                 name_2,
                 name_3,
@@ -52,28 +52,28 @@ struct BenchmarkResult
 
 #pragma optimize( "", off )
 int count;
-struct BranchlessFunction : public boost::static_visitor<>
+struct BranchlessFunction
 {
 public:
-    void operator()(branchless::Types::name_1) const { --count; }
-    void operator()(branchless::Types::name_2) const { --count; }
-    void operator()(branchless::Types::name_3) const { --count; }
-    void operator()(branchless::Types::name_4) const { --count; }
-    void operator()(branchless::Types::name_5) const { --count; }
-    void operator()(branchless::Types::name_6) const { --count; }
-    void operator()(branchless::Types::name_7) const { --count; }
-    void operator()(branchless::Types::name_8) const { --count; }
-    void operator()(branchless::Types::name_9) const { --count; }
-    void operator()(branchless::Types::name_10) const { ++count; }
-    void operator()(branchless::Types::name_11) const { ++count; }
-    void operator()(branchless::Types::name_12) const { ++count; }
-    void operator()(branchless::Types::name_13) const { ++count; }
-    void operator()(branchless::Types::name_14) const { ++count; }
-    void operator()(branchless::Types::name_15) const { ++count; }
-    void operator()(branchless::Types::name_16) const { ++count; }
-    void operator()(branchless::Types::name_17) const { ++count; }
-    void operator()(branchless::Types::name_18) const { ++count; }
-    void operator()(branchless::Types::name_19) const { ++count; }
+    void operator()(be::Types::name_1) const { --count; }
+    void operator()(be::Types::name_2) const { --count; }
+    void operator()(be::Types::name_3) const { --count; }
+    void operator()(be::Types::name_4) const { --count; }
+    void operator()(be::Types::name_5) const { --count; }
+    void operator()(be::Types::name_6) const { --count; }
+    void operator()(be::Types::name_7) const { --count; }
+    void operator()(be::Types::name_8) const { --count; }
+    void operator()(be::Types::name_9) const { --count; }
+    void operator()(be::Types::name_10) const { ++count; }
+    void operator()(be::Types::name_11) const { ++count; }
+    void operator()(be::Types::name_12) const { ++count; }
+    void operator()(be::Types::name_13) const { ++count; }
+    void operator()(be::Types::name_14) const { ++count; }
+    void operator()(be::Types::name_15) const { ++count; }
+    void operator()(be::Types::name_16) const { ++count; }
+    void operator()(be::Types::name_17) const { ++count; }
+    void operator()(be::Types::name_18) const { ++count; }
+    void operator()(be::Types::name_19) const { ++count; }
 };
 #pragma optimize( "", on )
 
@@ -191,7 +191,7 @@ void benchmark(const size_t N)
     branch.create.finnish = Clock::now();
 
     branchless_results.create.start = Clock::now();
-    std::vector<branchless::Type> branchlessVector(N);
+    std::vector<be::Type> branchlessVector(N);
     branchless_results.create.finnish = Clock::now();
 
     std::vector<std::string> strVector(N);
@@ -235,25 +235,25 @@ void benchmark(const size_t N)
     {
         switch (uniform_dist(e1))
         {
-        case 1: branchlessVector[i] = branchless::Types::name_1{}; break;
-        case 2: branchlessVector[i] = branchless::Types::name_2{}; break;
-        case 3: branchlessVector[i] = branchless::Types::name_3{}; break;
-        case 4: branchlessVector[i] = branchless::Types::name_4{}; break;
-        case 5: branchlessVector[i] = branchless::Types::name_5{}; break;
-        case 6: branchlessVector[i] = branchless::Types::name_6{}; break;
-        case 7: branchlessVector[i] = branchless::Types::name_7{}; break;
-        case 8: branchlessVector[i] = branchless::Types::name_8{}; break;
-        case 9: branchlessVector[i] = branchless::Types::name_9{}; break;
-        case 10: branchlessVector[i] = branchless::Types::name_10{}; break;
-        case 11: branchlessVector[i] = branchless::Types::name_11{}; break;
-        case 12: branchlessVector[i] = branchless::Types::name_12{}; break;
-        case 13: branchlessVector[i] = branchless::Types::name_13{}; break;
-        case 14: branchlessVector[i] = branchless::Types::name_14{}; break;
-        case 15: branchlessVector[i] = branchless::Types::name_15{}; break;
-        case 16: branchlessVector[i] = branchless::Types::name_16{}; break;
-        case 17: branchlessVector[i] = branchless::Types::name_17{}; break;
-        case 18: branchlessVector[i] = branchless::Types::name_18{}; break;
-        case 19: branchlessVector[i] = branchless::Types::name_19{}; break;
+        case 1: branchlessVector[i] = be::Types::name_1{}; break;
+        case 2: branchlessVector[i] = be::Types::name_2{}; break;
+        case 3: branchlessVector[i] = be::Types::name_3{}; break;
+        case 4: branchlessVector[i] = be::Types::name_4{}; break;
+        case 5: branchlessVector[i] = be::Types::name_5{}; break;
+        case 6: branchlessVector[i] = be::Types::name_6{}; break;
+        case 7: branchlessVector[i] = be::Types::name_7{}; break;
+        case 8: branchlessVector[i] = be::Types::name_8{}; break;
+        case 9: branchlessVector[i] = be::Types::name_9{}; break;
+        case 10: branchlessVector[i] = be::Types::name_10{}; break;
+        case 11: branchlessVector[i] = be::Types::name_11{}; break;
+        case 12: branchlessVector[i] = be::Types::name_12{}; break;
+        case 13: branchlessVector[i] = be::Types::name_13{}; break;
+        case 14: branchlessVector[i] = be::Types::name_14{}; break;
+        case 15: branchlessVector[i] = be::Types::name_15{}; break;
+        case 16: branchlessVector[i] = be::Types::name_16{}; break;
+        case 17: branchlessVector[i] = be::Types::name_17{}; break;
+        case 18: branchlessVector[i] = be::Types::name_18{}; break;
+        case 19: branchlessVector[i] = be::Types::name_19{}; break;
         }
     }
     branchless_results.fill.finnish = Clock::now();
@@ -282,7 +282,7 @@ void benchmark(const size_t N)
                    std::begin(strVector),
                    [](const auto &el)
     {
-        return branchless::toString(el);
+        return be::toString(el);
     });
     branchless_results.toString.finnish = Clock::now();
 
@@ -291,7 +291,7 @@ void benchmark(const size_t N)
                    std::begin(branchlessVector),
                    [](const auto &el)
     {
-        return branchless::fromString(el);
+        return be::fromString(el);
     });
     branchless_results.fromString.finnish = Clock::now();
 
@@ -299,7 +299,7 @@ void benchmark(const size_t N)
     branchless_results.function.start = Clock::now();
     BranchlessFunction bf;
     for (const auto &el : branchlessVector)
-        boost::apply_visitor(bf, el);
+        branchless::visit(el, bf);
     branchless_results.function.finnish = Clock::now();
 
 

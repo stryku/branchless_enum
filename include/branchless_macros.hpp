@@ -4,6 +4,7 @@
 
 
 #include "branchless_helpers.hpp"
+#include "branchless_variant.hpp"
 
 #include <boost/variant.hpp>
 
@@ -58,8 +59,7 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
                     \
         return{};\
     }\
@@ -127,10 +127,8 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
                     \
         return{};\
     }\
@@ -209,12 +207,9 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
                     \
         return{};\
     }\
@@ -306,14 +301,10 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
                     \
         return{};\
     }\
@@ -416,16 +407,11 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
                     \
         return{};\
     }\
@@ -539,18 +525,12 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
                     \
         return{};\
     }\
@@ -678,20 +658,13 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
                     \
         return{};\
     }\
@@ -830,22 +803,14 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
                     \
         return{};\
     }\
@@ -995,24 +960,15 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
                     \
         return{};\
     }\
@@ -1176,26 +1132,16 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
                     \
         return{};\
     }\
@@ -1370,28 +1316,17 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
                     \
         return{};\
     }\
@@ -1578,30 +1513,18 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
-                    if (str == name_types::Types::n12::toString()) return \
-                        name_types::Types::n12{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
+                    if (str == name_types::Types::n12::toString()) return n12; \
                     \
         return{};\
     }\
@@ -1802,32 +1725,19 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
-                    if (str == name_types::Types::n12::toString()) return \
-                        name_types::Types::n12{}; \
-                    if (str == name_types::Types::n13::toString()) return \
-                        name_types::Types::n13{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
+                    if (str == name_types::Types::n12::toString()) return n12; \
+                    if (str == name_types::Types::n13::toString()) return n13; \
                     \
         return{};\
     }\
@@ -2039,34 +1949,20 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
-                    if (str == name_types::Types::n12::toString()) return \
-                        name_types::Types::n12{}; \
-                    if (str == name_types::Types::n13::toString()) return \
-                        name_types::Types::n13{}; \
-                    if (str == name_types::Types::n14::toString()) return \
-                        name_types::Types::n14{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
+                    if (str == name_types::Types::n12::toString()) return n12; \
+                    if (str == name_types::Types::n13::toString()) return n13; \
+                    if (str == name_types::Types::n14::toString()) return n14; \
                     \
         return{};\
     }\
@@ -2291,36 +2187,21 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
-                    if (str == name_types::Types::n12::toString()) return \
-                        name_types::Types::n12{}; \
-                    if (str == name_types::Types::n13::toString()) return \
-                        name_types::Types::n13{}; \
-                    if (str == name_types::Types::n14::toString()) return \
-                        name_types::Types::n14{}; \
-                    if (str == name_types::Types::n15::toString()) return \
-                        name_types::Types::n15{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
+                    if (str == name_types::Types::n12::toString()) return n12; \
+                    if (str == name_types::Types::n13::toString()) return n13; \
+                    if (str == name_types::Types::n14::toString()) return n14; \
+                    if (str == name_types::Types::n15::toString()) return n15; \
                     \
         return{};\
     }\
@@ -2556,38 +2437,22 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
-                    if (str == name_types::Types::n12::toString()) return \
-                        name_types::Types::n12{}; \
-                    if (str == name_types::Types::n13::toString()) return \
-                        name_types::Types::n13{}; \
-                    if (str == name_types::Types::n14::toString()) return \
-                        name_types::Types::n14{}; \
-                    if (str == name_types::Types::n15::toString()) return \
-                        name_types::Types::n15{}; \
-                    if (str == name_types::Types::n16::toString()) return \
-                        name_types::Types::n16{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
+                    if (str == name_types::Types::n12::toString()) return n12; \
+                    if (str == name_types::Types::n13::toString()) return n13; \
+                    if (str == name_types::Types::n14::toString()) return n14; \
+                    if (str == name_types::Types::n15::toString()) return n15; \
+                    if (str == name_types::Types::n16::toString()) return n16; \
                     \
         return{};\
     }\
@@ -2837,40 +2702,23 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
-                    if (str == name_types::Types::n12::toString()) return \
-                        name_types::Types::n12{}; \
-                    if (str == name_types::Types::n13::toString()) return \
-                        name_types::Types::n13{}; \
-                    if (str == name_types::Types::n14::toString()) return \
-                        name_types::Types::n14{}; \
-                    if (str == name_types::Types::n15::toString()) return \
-                        name_types::Types::n15{}; \
-                    if (str == name_types::Types::n16::toString()) return \
-                        name_types::Types::n16{}; \
-                    if (str == name_types::Types::n17::toString()) return \
-                        name_types::Types::n17{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
+                    if (str == name_types::Types::n12::toString()) return n12; \
+                    if (str == name_types::Types::n13::toString()) return n13; \
+                    if (str == name_types::Types::n14::toString()) return n14; \
+                    if (str == name_types::Types::n15::toString()) return n15; \
+                    if (str == name_types::Types::n16::toString()) return n16; \
+                    if (str == name_types::Types::n17::toString()) return n17; \
                     \
         return{};\
     }\
@@ -3131,42 +2979,24 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
-                    if (str == name_types::Types::n12::toString()) return \
-                        name_types::Types::n12{}; \
-                    if (str == name_types::Types::n13::toString()) return \
-                        name_types::Types::n13{}; \
-                    if (str == name_types::Types::n14::toString()) return \
-                        name_types::Types::n14{}; \
-                    if (str == name_types::Types::n15::toString()) return \
-                        name_types::Types::n15{}; \
-                    if (str == name_types::Types::n16::toString()) return \
-                        name_types::Types::n16{}; \
-                    if (str == name_types::Types::n17::toString()) return \
-                        name_types::Types::n17{}; \
-                    if (str == name_types::Types::n18::toString()) return \
-                        name_types::Types::n18{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
+                    if (str == name_types::Types::n12::toString()) return n12; \
+                    if (str == name_types::Types::n13::toString()) return n13; \
+                    if (str == name_types::Types::n14::toString()) return n14; \
+                    if (str == name_types::Types::n15::toString()) return n15; \
+                    if (str == name_types::Types::n16::toString()) return n16; \
+                    if (str == name_types::Types::n17::toString()) return n17; \
+                    if (str == name_types::Types::n18::toString()) return n18; \
                     \
         return{};\
     }\
@@ -3440,44 +3270,25 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
-                    if (str == name_types::Types::n12::toString()) return \
-                        name_types::Types::n12{}; \
-                    if (str == name_types::Types::n13::toString()) return \
-                        name_types::Types::n13{}; \
-                    if (str == name_types::Types::n14::toString()) return \
-                        name_types::Types::n14{}; \
-                    if (str == name_types::Types::n15::toString()) return \
-                        name_types::Types::n15{}; \
-                    if (str == name_types::Types::n16::toString()) return \
-                        name_types::Types::n16{}; \
-                    if (str == name_types::Types::n17::toString()) return \
-                        name_types::Types::n17{}; \
-                    if (str == name_types::Types::n18::toString()) return \
-                        name_types::Types::n18{}; \
-                    if (str == name_types::Types::n19::toString()) return \
-                        name_types::Types::n19{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
+                    if (str == name_types::Types::n12::toString()) return n12; \
+                    if (str == name_types::Types::n13::toString()) return n13; \
+                    if (str == name_types::Types::n14::toString()) return n14; \
+                    if (str == name_types::Types::n15::toString()) return n15; \
+                    if (str == name_types::Types::n16::toString()) return n16; \
+                    if (str == name_types::Types::n17::toString()) return n17; \
+                    if (str == name_types::Types::n18::toString()) return n18; \
+                    if (str == name_types::Types::n19::toString()) return n19; \
                     \
         return{};\
     }\
@@ -3762,46 +3573,26 @@ struct name \
     } \
     static Type fromString(const std::string& str) \
     { \
-                    if (str == name_types::Types::n1::toString()) return \
-                        name_types::Types::n1{}; \
-                    if (str == name_types::Types::n2::toString()) return \
-                        name_types::Types::n2{}; \
-                    if (str == name_types::Types::n3::toString()) return \
-                        name_types::Types::n3{}; \
-                    if (str == name_types::Types::n4::toString()) return \
-                        name_types::Types::n4{}; \
-                    if (str == name_types::Types::n5::toString()) return \
-                        name_types::Types::n5{}; \
-                    if (str == name_types::Types::n6::toString()) return \
-                        name_types::Types::n6{}; \
-                    if (str == name_types::Types::n7::toString()) return \
-                        name_types::Types::n7{}; \
-                    if (str == name_types::Types::n8::toString()) return \
-                        name_types::Types::n8{}; \
-                    if (str == name_types::Types::n9::toString()) return \
-                        name_types::Types::n9{}; \
-                    if (str == name_types::Types::n10::toString()) return \
-                        name_types::Types::n10{}; \
-                    if (str == name_types::Types::n11::toString()) return \
-                        name_types::Types::n11{}; \
-                    if (str == name_types::Types::n12::toString()) return \
-                        name_types::Types::n12{}; \
-                    if (str == name_types::Types::n13::toString()) return \
-                        name_types::Types::n13{}; \
-                    if (str == name_types::Types::n14::toString()) return \
-                        name_types::Types::n14{}; \
-                    if (str == name_types::Types::n15::toString()) return \
-                        name_types::Types::n15{}; \
-                    if (str == name_types::Types::n16::toString()) return \
-                        name_types::Types::n16{}; \
-                    if (str == name_types::Types::n17::toString()) return \
-                        name_types::Types::n17{}; \
-                    if (str == name_types::Types::n18::toString()) return \
-                        name_types::Types::n18{}; \
-                    if (str == name_types::Types::n19::toString()) return \
-                        name_types::Types::n19{}; \
-                    if (str == name_types::Types::n20::toString()) return \
-                        name_types::Types::n20{}; \
+                    if (str == name_types::Types::n1::toString()) return n1; \
+                    if (str == name_types::Types::n2::toString()) return n2; \
+                    if (str == name_types::Types::n3::toString()) return n3; \
+                    if (str == name_types::Types::n4::toString()) return n4; \
+                    if (str == name_types::Types::n5::toString()) return n5; \
+                    if (str == name_types::Types::n6::toString()) return n6; \
+                    if (str == name_types::Types::n7::toString()) return n7; \
+                    if (str == name_types::Types::n8::toString()) return n8; \
+                    if (str == name_types::Types::n9::toString()) return n9; \
+                    if (str == name_types::Types::n10::toString()) return n10; \
+                    if (str == name_types::Types::n11::toString()) return n11; \
+                    if (str == name_types::Types::n12::toString()) return n12; \
+                    if (str == name_types::Types::n13::toString()) return n13; \
+                    if (str == name_types::Types::n14::toString()) return n14; \
+                    if (str == name_types::Types::n15::toString()) return n15; \
+                    if (str == name_types::Types::n16::toString()) return n16; \
+                    if (str == name_types::Types::n17::toString()) return n17; \
+                    if (str == name_types::Types::n18::toString()) return n18; \
+                    if (str == name_types::Types::n19::toString()) return n19; \
+                    if (str == name_types::Types::n20::toString()) return n20; \
                     \
         return{};\
     }\
