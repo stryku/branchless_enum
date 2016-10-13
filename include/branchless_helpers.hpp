@@ -1,8 +1,10 @@
 #pragma once
 
 #include <type_traits>
-#include <array>
 
+#include <cexpr/array.hpp>
+#include <cexpr/algorithm.hpp>
+#include <cexpr/crypto.hpp>
 template<bool...> struct bool_pack;
 
 template <bool ...bs>
@@ -20,11 +22,39 @@ using is_any_of = any_true<std::is_same<T, Args>::value...>;
 template <typename T, typename ...Args>
 constexpr bool is_any_of_v = is_any_of<T, Args...>::value;
 
-template <typename ...Types>
-constexpr auto make_array()->std::array<const char*, sizeof...(Types)>
+template <typename ...types>
+constexpr auto make_array()->cexpr::array<const char*, sizeof...(types)>
 {
-    return { (Types::toString())... };
+    return{ (types::toString())... };
 }
+
+struct type_name_info
+{
+    int value;
+    cexpr::detail::hash_t hash;
+
+    constexpr bool operator==(const type_name_info& other) const
+    {
+        return hash == other.hash;
+    }
+};
+
+
+template <typename ...types>
+constexpr auto make_hashes()
+->cexpr::array<type_name_info, sizeof...(types)>
+{
+    return{ type_name_info{ types::value, cexpr::hash(types::toString()) }... };
+}
+
+template <typename ...types>
+constexpr auto getSortedHashes()
+->cexpr::array<type_name_info, sizeof...(types)>
+{
+    return cexpr::sort(make_hashes<types...>());
+}
+
+
 
 # define EMPTY(...)
 # define DEFER(...) __VA_ARGS__ EMPTY()

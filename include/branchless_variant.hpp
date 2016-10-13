@@ -31,6 +31,13 @@ namespace branchless
             return *this;
         }
 
+        constexpr static variant fromValue(int value)
+        {
+            variant v;
+            v.value = value;
+            return v;
+        }
+
         template <typename T,
                   typename = std::enable_if_t<is_one_of_types<T>>>
         bool operator==(const T&) const

@@ -1,13 +1,44 @@
 #pragma once
 
 #include "include/branchless_variant.hpp"
+#include "include/constexpr_hash.hpp"
+#include "include/cexpr_sort.hpp"
 
-#include <array>
+#include <cexpr/array.hpp>
+#include <cexpr/algorithm.hpp>
+#include <cexpr/crypto.hpp>
 
-template <typename ...Types>
-constexpr auto getArray() -> std::array<const char*, sizeof...(Types)>
+template <typename ...types>
+constexpr auto getArray() ->cexpr::array<const char*, sizeof...(types)>
 {
-    return { (Types::toString())... };
+    return { (types::toString())... };
+}
+
+struct type_name_info
+{
+    int value;
+    cexpr::detail::hash_t hash;
+
+    constexpr bool operator==(const type_name_info& other) const
+    {
+        return hash == other.hash;
+    }
+};
+
+
+template <typename ...types>
+constexpr auto getHashes()
+          ->cexpr::array<type_name_info, sizeof...(types)>
+{
+    return{ { types::value, cexpr::hash(types::toString())}... };
+}
+
+template <typename ...types>
+constexpr const auto getSortedHashes()
+          ->cexpr::array<type_name_info, sizeof...(types)>
+{
+    constexpr const auto hashes = getHashes<types...>();
+    return cexpr::sort(hashes);
 }
 
 struct be_namespace
@@ -62,6 +93,8 @@ struct be_namespace
     };
 };
 
+
+
 struct be
 {
     struct Types
@@ -74,6 +107,7 @@ struct be
     using Type = branchless::variant<be_namespace::Types::name_1, be_namespace::Types::name_2>;
 
     constexpr static const auto nameArray = getArray<be_namespace::Types::name_1, be_namespace::Types::name_2>();
+    constexpr static const auto hashes = getSortedHashes<be_namespace::Types::name_1, be_namespace::Types::name_2>();
 
     struct detail
     {
@@ -112,10 +146,15 @@ struct be
 
     static Type fromString(const std::string& str)
     {
-        if (str == be_namespace::Types::name_1::toString()) return be_namespace::Types::name_1{};
-        if (str == be_namespace::Types::name_2::toString()) return be_namespace::Types::name_2{};
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };
 
-        return{};
+        auto index = cexpr::binary_search(hashes, info);
+        return Type::fromValue(hashes[index].value);
+
+        //if (str == be_namespace::Types::name_1::toString()) return be_namespace::Types::name_1{};
+        //if (str == be_namespace::Types::name_2::toString()) return be_namespace::Types::name_2{};
+
+        //return{};
     }
 };
 //template <typename T, typename T2,

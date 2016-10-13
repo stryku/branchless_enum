@@ -50,6 +50,7 @@ struct name \
     ]] \
     using Type = branchless::variant<$for j , [[name_types::Types::n$j]]>; \
     constexpr static const auto nameArray = make_array<$for j , [[name_types::Types::n$j]]>(); \
+    constexpr static const auto hashes = getSortedHashes<$for j, [[name_types::Types::n$j]]>();\
 \
     template <typename T, \
               typename = std::enable_if_t<be_namespace::Types::is_this_type_v<T>>> \
@@ -61,13 +62,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-        $for j[[
-            if (str == name_types::Types::n$j::toString()) return n$j; \
-        ]]
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
             \
-        return{};\
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 ]]

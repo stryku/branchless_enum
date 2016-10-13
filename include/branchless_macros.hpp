@@ -45,6 +45,8 @@ struct name \
     using Type = branchless::variant<name_types::Types::n1>; \
     constexpr static const auto nameArray = \
         make_array<name_types::Types::n1>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1>();\
 \
     template <typename T, \
               typename = \
@@ -57,11 +59,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_2(name, start_value, operators , n1, \
@@ -113,6 +116,8 @@ struct name \
         name_types::Types::n2>; \
     constexpr static const auto nameArray = make_array<name_types::Types::n1, \
         name_types::Types::n2>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2>();\
 \
     template <typename T, \
               typename = \
@@ -125,12 +130,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_3(name, start_value, operators , n1, n2, \
@@ -193,6 +198,9 @@ struct name \
         name_types::Types::n2, name_types::Types::n3>; \
     constexpr static const auto nameArray = make_array<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3>();\
 \
     template <typename T, \
               typename = \
@@ -205,13 +213,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_4(name, start_value, operators , n1, n2, n3, \
@@ -287,6 +294,9 @@ struct name \
     constexpr static const auto nameArray = make_array<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, \
         name_types::Types::n4>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4>();\
 \
     template <typename T, \
               typename = \
@@ -299,14 +309,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_5(name, start_value, operators , n1, n2, n3, n4, \
@@ -393,6 +401,10 @@ struct name \
     constexpr static const auto nameArray = make_array<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, \
+        name_types::Types::n5>();\
 \
     template <typename T, \
               typename = \
@@ -405,15 +417,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_6(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -511,6 +520,10 @@ struct name \
     constexpr static const auto nameArray = make_array<name_types::Types::n1, \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6>();\
 \
     template <typename T, \
               typename = \
@@ -523,16 +536,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_7(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -644,6 +653,10 @@ struct name \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, \
         name_types::Types::n7>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7>();\
 \
     template <typename T, \
               typename = \
@@ -656,17 +669,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_8(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -789,6 +797,11 @@ struct name \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, \
+        name_types::Types::n8>();\
 \
     template <typename T, \
               typename = \
@@ -801,18 +814,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_9(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -946,6 +953,11 @@ struct name \
         name_types::Types::n2, name_types::Types::n3, name_types::Types::n4, \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9>();\
 \
     template <typename T, \
               typename = \
@@ -958,19 +970,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_10(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -1118,6 +1123,11 @@ struct name \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, \
         name_types::Types::n10>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10>();\
 \
     template <typename T, \
               typename = \
@@ -1130,20 +1140,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_11(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -1302,6 +1304,12 @@ struct name \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11>();\
 \
     template <typename T, \
               typename = \
@@ -1314,21 +1322,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_12(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -1499,6 +1498,12 @@ struct name \
         name_types::Types::n5, name_types::Types::n6, name_types::Types::n7, \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11, name_types::Types::n12>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12>();\
 \
     template <typename T, \
               typename = \
@@ -1511,22 +1516,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    if (str == name_types::Types::n12::toString()) return n12; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_13(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -1711,6 +1706,13 @@ struct name \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11, name_types::Types::n12, \
         name_types::Types::n13>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13>();\
 \
     template <typename T, \
               typename = \
@@ -1723,23 +1725,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    if (str == name_types::Types::n12::toString()) return n12; \
-                    if (str == name_types::Types::n13::toString()) return n13; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_14(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -1935,6 +1926,13 @@ struct name \
         name_types::Types::n8, name_types::Types::n9, name_types::Types::n10, \
         name_types::Types::n11, name_types::Types::n12, \
         name_types::Types::n13, name_types::Types::n14>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14>();\
 \
     template <typename T, \
               typename = \
@@ -1947,24 +1945,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    if (str == name_types::Types::n12::toString()) return n12; \
-                    if (str == name_types::Types::n13::toString()) return n13; \
-                    if (str == name_types::Types::n14::toString()) return n14; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_15(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -2173,6 +2159,14 @@ struct name \
         name_types::Types::n11, name_types::Types::n12, \
         name_types::Types::n13, name_types::Types::n14, \
         name_types::Types::n15>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15>();\
 \
     template <typename T, \
               typename = \
@@ -2185,25 +2179,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    if (str == name_types::Types::n12::toString()) return n12; \
-                    if (str == name_types::Types::n13::toString()) return n13; \
-                    if (str == name_types::Types::n14::toString()) return n14; \
-                    if (str == name_types::Types::n15::toString()) return n15; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_16(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -2423,6 +2404,14 @@ struct name \
         name_types::Types::n11, name_types::Types::n12, \
         name_types::Types::n13, name_types::Types::n14, \
         name_types::Types::n15, name_types::Types::n16>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16>();\
 \
     template <typename T, \
               typename = \
@@ -2435,26 +2424,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    if (str == name_types::Types::n12::toString()) return n12; \
-                    if (str == name_types::Types::n13::toString()) return n13; \
-                    if (str == name_types::Types::n14::toString()) return n14; \
-                    if (str == name_types::Types::n15::toString()) return n15; \
-                    if (str == name_types::Types::n16::toString()) return n16; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_17(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -2688,6 +2663,15 @@ struct name \
         name_types::Types::n13, name_types::Types::n14, \
         name_types::Types::n15, name_types::Types::n16, \
         name_types::Types::n17>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17>();\
 \
     template <typename T, \
               typename = \
@@ -2700,27 +2684,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    if (str == name_types::Types::n12::toString()) return n12; \
-                    if (str == name_types::Types::n13::toString()) return n13; \
-                    if (str == name_types::Types::n14::toString()) return n14; \
-                    if (str == name_types::Types::n15::toString()) return n15; \
-                    if (str == name_types::Types::n16::toString()) return n16; \
-                    if (str == name_types::Types::n17::toString()) return n17; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_18(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -2965,6 +2934,15 @@ struct name \
         name_types::Types::n13, name_types::Types::n14, \
         name_types::Types::n15, name_types::Types::n16, \
         name_types::Types::n17, name_types::Types::n18>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18>();\
 \
     template <typename T, \
               typename = \
@@ -2977,28 +2955,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    if (str == name_types::Types::n12::toString()) return n12; \
-                    if (str == name_types::Types::n13::toString()) return n13; \
-                    if (str == name_types::Types::n14::toString()) return n14; \
-                    if (str == name_types::Types::n15::toString()) return n15; \
-                    if (str == name_types::Types::n16::toString()) return n16; \
-                    if (str == name_types::Types::n17::toString()) return n17; \
-                    if (str == name_types::Types::n18::toString()) return n18; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_19(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -3256,6 +3218,16 @@ struct name \
         name_types::Types::n15, name_types::Types::n16, \
         name_types::Types::n17, name_types::Types::n18, \
         name_types::Types::n19>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18, \
+        name_types::Types::n19>();\
 \
     template <typename T, \
               typename = \
@@ -3268,29 +3240,12 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    if (str == name_types::Types::n12::toString()) return n12; \
-                    if (str == name_types::Types::n13::toString()) return n13; \
-                    if (str == name_types::Types::n14::toString()) return n14; \
-                    if (str == name_types::Types::n15::toString()) return n15; \
-                    if (str == name_types::Types::n16::toString()) return n16; \
-                    if (str == name_types::Types::n17::toString()) return n17; \
-                    if (str == name_types::Types::n18::toString()) return n18; \
-                    if (str == name_types::Types::n19::toString()) return n19; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
 #define branchless_enum_20(name, start_value, operators , n1, n2, n3, n4, n5, \
@@ -3559,6 +3514,16 @@ struct name \
         name_types::Types::n15, name_types::Types::n16, \
         name_types::Types::n17, name_types::Types::n18, \
         name_types::Types::n19, name_types::Types::n20>(); \
+    constexpr static const auto hashes = \
+        getSortedHashes<name_types::Types::n1, name_types::Types::n2, \
+        name_types::Types::n3, name_types::Types::n4, name_types::Types::n5, \
+        name_types::Types::n6, name_types::Types::n7, name_types::Types::n8, \
+        name_types::Types::n9, name_types::Types::n10, \
+        name_types::Types::n11, name_types::Types::n12, \
+        name_types::Types::n13, name_types::Types::n14, \
+        name_types::Types::n15, name_types::Types::n16, \
+        name_types::Types::n17, name_types::Types::n18, \
+        name_types::Types::n19, name_types::Types::n20>();\
 \
     template <typename T, \
               typename = \
@@ -3571,29 +3536,11 @@ struct name \
     { \
         return nameArray[t.value]; \
     } \
-    static Type fromString(const std::string& str) \
-    { \
-                    if (str == name_types::Types::n1::toString()) return n1; \
-                    if (str == name_types::Types::n2::toString()) return n2; \
-                    if (str == name_types::Types::n3::toString()) return n3; \
-                    if (str == name_types::Types::n4::toString()) return n4; \
-                    if (str == name_types::Types::n5::toString()) return n5; \
-                    if (str == name_types::Types::n6::toString()) return n6; \
-                    if (str == name_types::Types::n7::toString()) return n7; \
-                    if (str == name_types::Types::n8::toString()) return n8; \
-                    if (str == name_types::Types::n9::toString()) return n9; \
-                    if (str == name_types::Types::n10::toString()) return n10; \
-                    if (str == name_types::Types::n11::toString()) return n11; \
-                    if (str == name_types::Types::n12::toString()) return n12; \
-                    if (str == name_types::Types::n13::toString()) return n13; \
-                    if (str == name_types::Types::n14::toString()) return n14; \
-                    if (str == name_types::Types::n15::toString()) return n15; \
-                    if (str == name_types::Types::n16::toString()) return n16; \
-                    if (str == name_types::Types::n17::toString()) return n17; \
-                    if (str == name_types::Types::n18::toString()) return n18; \
-                    if (str == name_types::Types::n19::toString()) return n19; \
-                    if (str == name_types::Types::n20::toString()) return n20; \
-                    \
-        return{};\
+    static Type fromString(const std::string& str)\
+    {\
+        type_name_info info{ 0, cexpr::hash(str.c_str()) };\
+            \
+        auto index = cexpr::binary_search(hashes, info);\
+        return Type::fromValue(hashes[index].value);\
     }\
 };
